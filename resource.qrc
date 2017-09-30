@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/Icon/hotline.png</file>
+        <file>resource/translate/qtbase_ru.qm</file>
+        <file>resource/Icon/GasStation.png</file>
+        <file>resource/Icon/ekkr.png</file>
+        <file>resource/Icon/add.png</file>
+        <file>resource/Icon/edit.png</file>
+        <file>resource/Icon/clear.png</file>
+        <file>resource/Icon/delete.png</file>
+    </qresource>
+</RCC>
