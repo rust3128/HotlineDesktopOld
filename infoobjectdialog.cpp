@@ -2,6 +2,7 @@
 #include "ui_infoobjectdialog.h"
 #include "addpcdialog.h"
 #include <QDebug>
+#include <QSqlQuery>
 
 InfoObjectDialog::InfoObjectDialog(QSqlRecord record, QString nameBrend, QWidget *parent) :
     QDialog(parent),
@@ -28,6 +29,7 @@ InfoObjectDialog::~InfoObjectDialog()
 void InfoObjectDialog::createUI()
 {
     modelRro = new QSqlQueryModel();
+    modelPC = new QSqlQueryModel();
     QString strSql = QString("SELECT rroid, posid, rrotype, zn, fn, ekvaer, iddev "
                              "FROM rro WHERE objectid=%1").arg(azs.objectID);
 
@@ -51,6 +53,20 @@ void InfoObjectDialog::createUI()
     ui->tableViewRro->verticalHeader()->setDefaultSectionSize(ui->tableViewRro->verticalHeader()->minimumSectionSize());
     ui->tableViewRro->selectRow(0);
 
+    strSql = QString("SELECT pctype.typename, INET_NTOA(computers.ip) AS IP FROM pctype "
+                     "INNER JOIN computers ON pctype.pctypeid = computers.pctypeid "
+                     "WHERE computers.objectid = %1 "
+                     "ORDER BY computers.pcid").arg(azs.objectID);
+    modelPC->setQuery(strSql);
+    modelPC->setHeaderData(0,Qt::Horizontal,"Назначение");
+    modelPC->setHeaderData(1,Qt::Horizontal,"IP Адрес");
+    ui->tableViewPC->setModel(modelPC);
+    ui->tableViewPC->verticalHeader()->hide();
+    ui->tableViewPC->resizeColumnsToContents();
+    ui->tableViewPC->verticalHeader()->setDefaultSectionSize(ui->tableViewRro->verticalHeader()->minimumSectionSize());
+    ui->tableViewPC->selectRow(0);
+
+
     ui->labelColRro->setText("Кассовх аппаратов "+QString::number(modelRro->rowCount())+".");
 
 
@@ -58,6 +74,8 @@ void InfoObjectDialog::createUI()
 
 void InfoObjectDialog::on_toolButtonAdd_clicked()
 {
-    AddPCDialog *addPcDlg = new AddPCDialog();
+    AddPCDialog *addPcDlg = new AddPCDialog(azs.objectID);
     addPcDlg->exec();
+    modelPC->setQuery(modelPC->query().lastQuery());
+//    model.setQuery( model.query().lastQuery() );
 }

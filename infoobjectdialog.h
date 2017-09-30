@@ -35,6 +35,7 @@ private:
     Ui::InfoObjectDialog *ui;
     azsInfo azs;
     QSqlQueryModel *modelRro;
+    QSqlQueryModel *modelPC;
 };
 
 #endif // INFOOBJECTDIALOG_H
