@@ -13,6 +13,7 @@ AddPCDialog::AddPCDialog(int objID, QWidget *parent) :
 {
     ui->setupUi(this);
     objectID=objID;
+    ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
 
     /* Создаем строку для регулярного выражения */
         QString ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
@@ -60,8 +61,6 @@ void AddPCDialog::on_buttonBox_clicked(QAbstractButton *button)
         addNewPC();
         this->close();
         break;
-    case QDialogButtonBox::Reset:
-        break;
     case QDialogButtonBox::Cancel:
         this->close();
         break;
@@ -88,5 +87,6 @@ void AddPCDialog::slotGetNumberButton()
 {
     QDynamicRadioButton *button = (QDynamicRadioButton*)sender();
     rroTypeID=button->gettypeID();
+    ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(true);
 //    qDebug() << "PCType ID" << rroTypeID;
 }

@@ -56,7 +56,7 @@ void InfoObjectDialog::createUI()
     strSql = QString("SELECT pctype.typename, INET_NTOA(computers.ip) AS IP FROM pctype "
                      "INNER JOIN computers ON pctype.pctypeid = computers.pctypeid "
                      "WHERE computers.objectid = %1 "
-                     "ORDER BY computers.pcid").arg(azs.objectID);
+                     "ORDER BY computers.pctypeid").arg(azs.objectID);
     modelPC->setQuery(strSql);
     modelPC->setHeaderData(0,Qt::Horizontal,"Назначение");
     modelPC->setHeaderData(1,Qt::Horizontal,"IP Адрес");
