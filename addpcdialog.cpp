@@ -73,6 +73,9 @@ void AddPCDialog::addNewPC()
 {
     QString strSQL;
     QSqlQuery q;
+    if(ui->lineEditIP->text().length()==0) {
+        qDebug() << "Не верно указан IP Адрес.";
+    }
     strSQL = QString("INSERT INTO computers (objectid, pctypeid, ip) VALUES (%1, %2, INET_ATON('%3'))")
             .arg(objectID)
             .arg(rroTypeID)
@@ -90,3 +93,7 @@ void AddPCDialog::slotGetNumberButton()
     ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(true);
 //    qDebug() << "PCType ID" << rroTypeID;
 }
+
+
+
+
