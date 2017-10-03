@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QSqlRecord>
 #include <QSqlQueryModel>
+#include <QSettings>
+#include <QProcess>
 
 struct azsInfo {
     int objectID;       // ID объекта
@@ -35,6 +37,8 @@ private slots:
 
     void on_toolButtonRroEdit_clicked();
 
+    void on_tableViewPC_doubleClicked(const QModelIndex &idx);
+
 private:
     void createUI();
 private:
@@ -42,6 +46,8 @@ private:
     azsInfo azs;
     QSqlQueryModel *modelRro;
     QSqlQueryModel *modelPC;
+    QSettings *settings;
+    QProcess *vncStart;
 };
 
 #endif // INFOOBJECTDIALOG_H

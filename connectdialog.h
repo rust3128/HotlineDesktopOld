@@ -25,6 +25,8 @@ private slots:
 
     void on_buttonBox_clicked(QAbstractButton *button);
 
+    void on_toolButton_clicked();
+
 signals:
     void closeMainWin(void);
 

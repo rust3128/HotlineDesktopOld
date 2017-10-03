@@ -1,15 +1,22 @@
 #include "infoobjectdialog.h"
 #include "ui_infoobjectdialog.h"
 #include "addpcdialog.h"
+#include "options.h"
 #include "addrrodialog.h"
 #include <QDebug>
 #include <QSqlQuery>
+#include <QtGlobal>
+#include <QMessageBox>
+
 
 InfoObjectDialog::InfoObjectDialog(QSqlRecord record, QString nameBrend, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::InfoObjectDialog)
 {
     ui->setupUi(this);
+
+    settings = new QSettings(ORGANIZATION_NAME, APPLICATION_NAME);
+
     azs.brendName=nameBrend;
     azs.objectID=record.value("objectid").toInt();
     azs.terminalID=record.value("terminalid").toInt();
@@ -111,4 +118,29 @@ void InfoObjectDialog::on_toolButtonRroEdit_clicked()
     addRroDialog *addRroDlg =  new addRroDialog(azs.objectID,q.value(0).toInt());
     addRroDlg->exec();
     modelRro->setQuery(modelRro->query().lastQuery());
+}
+
+void InfoObjectDialog::on_tableViewPC_doubleClicked(const QModelIndex &idx)
+{
+    QString program = "vncviewer";
+    QStringList argum;
+    QString ip = modelPC->data(modelPC->index(idx.row(),1)).toString();
+    argum << "-passwd" << "/home/rust/.vnc/passwd" << ip;
+//    argum << "-passwd" << ip;
+    QString command = settings->value("common/vncpromt").toString().trimmed();
+    vncStart = new QProcess(this);
+    if(command.length()==0) {
+        QMessageBox::critical(0, qApp->tr("Не могу выполнить подключение по VNC"),
+                              QString("Отсутсвует настройка по VNC подключению.\n"
+                                      "Зайдтие в меню Настройка->Параметры."),
+                              QMessageBox::Ok);
+    }
+    command = command + " " + ip;
+    vncStart->start(program,argum);
+//    vncStart->waitForFinished();
+//    QString message = vncStart->readAllStandardOutput();
+//    qDebug() << message;
+//    qDebug() << "Error" << endl << vncStart->readAllStandardError();
+//    system(qPrintable(command));
+
 }
