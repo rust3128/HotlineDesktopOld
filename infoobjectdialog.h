@@ -29,6 +29,12 @@ public:
 private slots:
     void on_toolButtonAdd_clicked();
 
+    void on_toolButtonEdit_clicked();
+
+    void on_toolButton_clicked();
+
+    void on_toolButtonRroEdit_clicked();
+
 private:
     void createUI();
 private:

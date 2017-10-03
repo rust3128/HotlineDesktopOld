@@ -7,14 +7,15 @@
 
 
 
-AddPCDialog::AddPCDialog(int objID, QWidget *parent) :
+AddPCDialog::AddPCDialog(int objID, int pc, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddPCDialog)
 {
     ui->setupUi(this);
     objectID=objID;
+    pcID=pc;
     ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
-
+    rroTypeID=-1;
     /* Создаем строку для регулярного выражения */
         QString ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
         /* Создаем регулярное выражение с применением строки, как
@@ -30,6 +31,10 @@ AddPCDialog::AddPCDialog(int objID, QWidget *parent) :
         QRegExpValidator *ipValidator = new QRegExpValidator(ipRegex, this);
         /* Устанавливаем Валидатор на QLineEdit */
         ui->lineEditIP->setValidator(ipValidator);
+
+       if(pcID >=0) {
+           existPc();
+       }
        showPCType();
 }
 
@@ -46,6 +51,9 @@ void AddPCDialog::showPCType()
         QDynamicRadioButton *button = new QDynamicRadioButton(q.value(0).toInt(),this);
         button->setText(q.value(1).toString());
         ui->gridLayout->addWidget(button);
+        if(rroTypeID==button->gettypeID()){
+            button->setChecked(true);
+        }
         connect(button,SIGNAL(clicked()),this,SLOT(slotGetNumberButton()));
 
     }
@@ -58,7 +66,10 @@ void AddPCDialog::on_buttonBox_clicked(QAbstractButton *button)
 
     switch (ui->buttonBox->standardButton(button)) {
     case QDialogButtonBox::Save:
-        addNewPC();
+        if(pcID<0)
+            addNewPC();
+        else
+            editPC();
         this->close();
         break;
     case QDialogButtonBox::Cancel:
@@ -85,6 +96,30 @@ void AddPCDialog::addNewPC()
 
 }
 
+void AddPCDialog::existPc()
+{
+    QString strSQL = QString("SELECT pctypeid, INET_NTOA(ip) FROM computers WHERE pcid=%1")
+            .arg(pcID);
+    QSqlQuery q;
+    if(!q.exec(strSQL)) qDebug() << "Не удалось получить информацию о РС" << q.lastError().text();
+    q.next();
+    rroTypeID=q.value(0).toInt();
+    ui->lineEditIP->setText(q.value(1).toString());
+}
+
+void AddPCDialog::editPC()
+{
+    QString strSQL;
+    QSqlQuery q;
+    strSQL = QString("UPDATE `hotline`.`computers` SET `pctypeid`='%1', `ip`=INET_ATON('%2') WHERE `pcid`='%3'")
+            .arg(rroTypeID)
+            .arg(ui->lineEditIP->text().trimmed())
+            .arg(pcID);
+//    qDebug() << strSQL;
+    if(!q.exec(strSQL)) qDebug() << "Не удалось обновить информацию о ПК" << q.lastError().text();
+
+}
+
 
 void AddPCDialog::slotGetNumberButton()
 {
@@ -97,3 +132,8 @@ void AddPCDialog::slotGetNumberButton()
 
 
 
+
+void AddPCDialog::on_lineEditIP_textChanged()
+{
+     ui->buttonBox->button(QDialogButtonBox::Save)->setEnabled(true);
+}
