@@ -122,10 +122,18 @@ void InfoObjectDialog::on_toolButtonRroEdit_clicked()
 
 void InfoObjectDialog::on_tableViewPC_doubleClicked(const QModelIndex &idx)
 {
-    QString program = "vncviewer";
+//    QString program = "vncviewer";
     QStringList argum;
     QString ip = modelPC->data(modelPC->index(idx.row(),1)).toString();
-    argum << "-passwd" << "/home/rust/.vnc/passwd" << ip;
+
+#ifdef Q_OS_WIN
+     argum << ip;
+#else
+     argum << "-passwd" << "/home/rust/.vnc/passwd" << ip;
+#endif
+
+
+
 //    argum << "-passwd" << ip;
     QString command = settings->value("common/vncpromt").toString().trimmed();
     vncStart = new QProcess(this);
@@ -135,8 +143,9 @@ void InfoObjectDialog::on_tableViewPC_doubleClicked(const QModelIndex &idx)
                                       "Зайдтие в меню Настройка->Параметры."),
                               QMessageBox::Ok);
     }
-    command = command + " " + ip;
-    vncStart->start(program,argum);
+//    command = command + " " + ip;
+    qDebug() << command << argum;
+    vncStart->start(command,argum);
 //    vncStart->waitForFinished();
 //    QString message = vncStart->readAllStandardOutput();
 //    qDebug() << message;
