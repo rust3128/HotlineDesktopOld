@@ -153,3 +153,19 @@ void InfoObjectDialog::on_tableViewPC_doubleClicked(const QModelIndex &idx)
 //    system(qPrintable(command));
 
 }
+
+void InfoObjectDialog::on_toolButtonDell_clicked()
+{
+    QString strSQL;
+    QSqlQuery q;
+    QModelIndex idx = ui->tableViewPC->selectionModel()->currentIndex();
+    int psID = modelPC->data(modelPC->index(idx.row(),2)).toInt();
+    strSQL = QString("DELETE FROM `hotline`.`computers` WHERE `pcid`='%1';").arg(psID);
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, QString::fromUtf8("Удаление ПС"),
+                          QString::fromUtf8("Вы действительно хотите удалить информацию об этом компьютере?"),
+                          QMessageBox::Yes | QMessageBox::No );
+    if (reply == QMessageBox::Yes)
+        q.exec(strSQL);
+    modelPC->setQuery(modelPC->query().lastQuery());
+}

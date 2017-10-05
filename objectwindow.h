@@ -27,8 +27,11 @@ private slots:
 
     void on_tableViewAzs_doubleClicked(const QModelIndex &idx);
 
+    void on_comboBoxRegion_activated(int idx);
+
 private:
     void createUI();
+    void createUIRegions();
     void spanRro();
     void newAzsData();
     void editAzsData();
@@ -40,9 +43,11 @@ private:
 private:
     Ui::ObjectWindow *ui;
     int brendid;            //Текущий бренд
+    int regionID;           //Текущий регион
     QString namebrend;      //Наименование текущего бренда
     QSqlTableModel *modelAzs;   //Модель АЗС
     QSqlTableModel *modelRro;   //Модель РРО
+    QSqlQueryModel *modelRegions;   //Модель регионов
     QString filterBrend;      //Фильтр для выбора АЗС конкретного бренда
 
 };

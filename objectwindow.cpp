@@ -16,7 +16,6 @@ ObjectWindow::ObjectWindow(int brendID, QString brendName, QWidget *parent) :
     namebrend=brendName;
     createUI();
     connect(ui->tableViewRro, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(on_tableViewRro_customContextMenuRequested(QPoint)));
-
 }
 
 ObjectWindow::~ObjectWindow()
@@ -28,6 +27,7 @@ void ObjectWindow::createUI()
 {
     modelAzs = new QSqlTableModel();
     modelRro = new QSqlTableModel();
+    createUIRegions();
     filterBrend=QString("brendid=%1").arg(brendid);
     ui->labelBrends->setText(namebrend);
     ///// Инициализация вкладки АЗС
@@ -81,6 +81,17 @@ void ObjectWindow::createUI()
 
 }
 
+void ObjectWindow::createUIRegions()
+{
+    QString strSQL;
+    modelRegions = new QSqlQueryModel();
+    strSQL = QString("SELECT ownerid, name FROM regions WHERE brendid=%1").arg(brendid);
+    modelRegions->setQuery(strSQL);
+    ui->comboBoxRegion->setModel(modelRegions);
+    ui->comboBoxRegion->setModelColumn(1);
+    regionID=-1;
+}
+
 void ObjectWindow::spanRro()
 {
     int currTerm = modelRro->data(modelRro->index(0,3)).toInt();
@@ -100,8 +111,6 @@ void ObjectWindow::spanRro()
         }
     }
 }
-
-
 
 void ObjectWindow::on_actionAdd_triggered()
 {
@@ -285,4 +294,12 @@ void ObjectWindow::on_tableViewAzs_doubleClicked(const QModelIndex &idx)
 //    modelAzs->record(idx.row());
     InfoObjectDialog *infObjDlg = new InfoObjectDialog(modelAzs->record(idx.row()),namebrend);
     infObjDlg->exec();
+}
+
+void ObjectWindow::on_comboBoxRegion_activated(int idx)
+{
+    QModelIndex indexModel=modelRegions->index(idx,0,QModelIndex());
+    regionID=modelRegions->data(indexModel, Qt::DisplayRole).toInt();
+    qDebug() << "Region id " << regionID;
+    modelAzs->setFilter(filterBrend+QString(" and regionid=%1").arg(regionID));
 }

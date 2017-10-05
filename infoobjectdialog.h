@@ -39,6 +39,8 @@ private slots:
 
     void on_tableViewPC_doubleClicked(const QModelIndex &idx);
 
+    void on_toolButtonDell_clicked();
+
 private:
     void createUI();
 private:

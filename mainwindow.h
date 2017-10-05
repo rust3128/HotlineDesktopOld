@@ -21,6 +21,10 @@ private slots:
     void on_actionBrends_triggered();
     void slotGetNumberButton();
 
+    void on_actionAbout_triggered();
+
+    void on_action_Qt_triggered();
+
 private:
     void setToolBarBrends();
 private:

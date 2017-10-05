@@ -26,7 +26,7 @@ void AddAzsDialog::createUI()
     QString strSQL;
     ///////список регионов
     modelRegions = new QSqlQueryModel();
-    strSQL = QString("SELECT regionid, name FROM regions WHERE brendid=%1").arg(brendID);
+    strSQL = QString("SELECT ownerid, name FROM regions WHERE brendid=%1").arg(brendID);
     modelRegions->setQuery(strSQL);
     ui->comboBoxRegion->setModel(modelRegions);
     ui->comboBoxRegion->setModelColumn(1);

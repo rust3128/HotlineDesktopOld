@@ -6,6 +6,7 @@
 #include "objectwindow.h"
 #include <QSqlQuery>
 #include <QSqlError>
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -69,4 +70,17 @@ void MainWindow::setToolBarBrends()
 
     }
     q.finish();
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    QMessageBox::about(this, "О Программе Hotline Desktop",
+                       "<h2>Hotline Desktop v.0.0.2</h2>"
+                       "<p>Copyright &copy; 2017 <a href=”mailto:rust3128gmail.com?subject=HotlineDesktop”>Rust (Ruslan Polupan).</a></p>"
+                       "<p>Программа-инструмент для помощи сотрудникам горячей линии.");
+}
+
+void MainWindow::on_action_Qt_triggered()
+{
+    QMessageBox::aboutQt(this, "О Qt");
 }
