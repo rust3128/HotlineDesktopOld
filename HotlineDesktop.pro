@@ -33,7 +33,8 @@ SOURCES += \
     addazsdialog.cpp \
     addrrodialog.cpp \
     infoobjectdialog.cpp \
-    addpcdialog.cpp
+    addpcdialog.cpp \
+    findwindow.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -46,7 +47,8 @@ HEADERS += \
     addazsdialog.h \
     addrrodialog.h \
     infoobjectdialog.h \
-    addpcdialog.h
+    addpcdialog.h \
+    findwindow.h
 
 FORMS += \
         mainwindow.ui \
@@ -56,7 +58,8 @@ FORMS += \
     addazsdialog.ui \
     addrrodialog.ui \
     infoobjectdialog.ui \
-    addpcdialog.ui
+    addpcdialog.ui \
+    findwindow.ui
 
 RESOURCES += \
     resource.qrc

@@ -4,6 +4,7 @@
 #include "brendsdialog.h"
 #include "qdynamicbutton.h"
 #include "objectwindow.h"
+#include "findwindow.h"
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QMessageBox>
@@ -54,8 +55,8 @@ void MainWindow::slotGetNumberButton()
     objWin->setWindowTitle(button->text());
     mdiArea->addSubWindow(objWin);
     objWin->show();
-
-
+    mdiArea->tileSubWindows();
+//    mdiArea->cascadeSubWindows();
 }
 
 void MainWindow::setToolBarBrends()
@@ -83,4 +84,22 @@ void MainWindow::on_actionAbout_triggered()
 void MainWindow::on_action_Qt_triggered()
 {
     QMessageBox::aboutQt(this, "О Qt");
+}
+
+void MainWindow::on_actionFindRro_triggered()
+{
+    FindWindow *findWnd = new FindWindow();
+    mdiArea->addSubWindow(findWnd);
+    findWnd->show();
+    mdiArea->tileSubWindows();
+}
+
+void MainWindow::on_actionCascade_triggered()
+{
+    mdiArea->cascadeSubWindows();
+}
+
+void MainWindow::on_action_triggered()
+{
+    mdiArea->tileSubWindows();
 }

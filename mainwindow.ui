@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="resource.qrc">
-    <normaloff>:/resource/Icon/hotline.png</normaloff>:/resource/Icon/hotline.png</iconset>
+    <normaloff>:/resource/Icon/hotline_big.png</normaloff>:/resource/Icon/hotline_big.png</iconset>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonIconOnly</enum>
@@ -51,16 +51,38 @@
     <addaction name="separator"/>
     <addaction name="action_Qt"/>
    </widget>
+   <widget class="QMenu" name="menuReports">
+    <property name="title">
+     <string>Отчеты</string>
+    </property>
+    <addaction name="actionFindRro"/>
+   </widget>
+   <widget class="QMenu" name="menuWindow">
+    <property name="title">
+     <string>Окно</string>
+    </property>
+    <addaction name="actionCascade"/>
+    <addaction name="action"/>
+   </widget>
+   <addaction name="menuReports"/>
    <addaction name="menu"/>
+   <addaction name="menuWindow"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="iconSize">
+    <size>
+     <width>32</width>
+     <height>32</height>
+    </size>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionFindRro"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="toolBarBrends">
@@ -92,6 +114,34 @@
   <action name="action_Qt">
    <property name="text">
     <string>О Qt</string>
+   </property>
+  </action>
+  <action name="actionFindRro">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/resource/Icon/find.png</normaloff>:/resource/Icon/find.png</iconset>
+   </property>
+   <property name="text">
+    <string>Найти РРО</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Найти РРО&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+F</string>
+   </property>
+  </action>
+  <action name="actionCascade">
+   <property name="text">
+    <string>Каскадом</string>
+   </property>
+   <property name="toolTip">
+    <string>Каскадом </string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>Плитка</string>
    </property>
   </action>
  </widget>

@@ -8,5 +8,7 @@
         <file>resource/Icon/edit.png</file>
         <file>resource/Icon/clear.png</file>
         <file>resource/Icon/delete.png</file>
+        <file>resource/Icon/find.png</file>
+        <file>resource/Icon/hotline_big.png</file>
     </qresource>
 </RCC>

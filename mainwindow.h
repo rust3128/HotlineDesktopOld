@@ -25,6 +25,12 @@ private slots:
 
     void on_action_Qt_triggered();
 
+    void on_actionFindRro_triggered();
+
+    void on_actionCascade_triggered();
+
+    void on_action_triggered();
+
 private:
     void setToolBarBrends();
 private:
