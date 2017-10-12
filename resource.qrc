@@ -10,5 +10,6 @@
         <file>resource/Icon/delete.png</file>
         <file>resource/Icon/find.png</file>
         <file>resource/Icon/hotline_big.png</file>
+        <file>resource/Icon/hotline.ico</file>
     </qresource>
 </RCC>
