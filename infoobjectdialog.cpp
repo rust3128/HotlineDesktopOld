@@ -127,7 +127,8 @@ void InfoObjectDialog::on_tableViewPC_doubleClicked(const QModelIndex &idx)
     QString ip = modelPC->data(modelPC->index(idx.row(),1)).toString();
 
 #ifdef Q_OS_WIN
-     argum << ip;
+     argum << ip << "-password=88888888";
+//      tvnviewer -host=hostname [OPTIONS]
 #else
      argum << "-passwd" << "/home/rust/.vnc/passwd" << ip;
 #endif
