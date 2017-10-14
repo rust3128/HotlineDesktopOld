@@ -41,8 +41,11 @@ private slots:
 
     void on_toolButtonDell_clicked();
 
+    void on_toolButtonVnc_clicked();
+
 private:
     void createUI();
+    void connectToObject(const QModelIndex &idx);   //Подключение по ПК по VNC
 private:
     Ui::InfoObjectDialog *ui;
     azsInfo azs;

@@ -81,6 +81,8 @@ void InfoObjectDialog::createUI()
 
 }
 
+
+
 void InfoObjectDialog::on_toolButtonAdd_clicked()
 {
     AddPCDialog *addPcDlg = new AddPCDialog(azs.objectID,-1);
@@ -122,37 +124,7 @@ void InfoObjectDialog::on_toolButtonRroEdit_clicked()
 
 void InfoObjectDialog::on_tableViewPC_doubleClicked(const QModelIndex &idx)
 {
-//    QString program = "vncviewer";
-    QStringList argum;
-    QString ip = modelPC->data(modelPC->index(idx.row(),1)).toString();
-
-#ifdef Q_OS_WIN
-     argum << ip << "-password=88888888";
-//      tvnviewer -host=hostname [OPTIONS]
-#else
-     argum << "-passwd" << "/home/rust/.vnc/passwd" << ip;
-#endif
-
-
-
-//    argum << "-passwd" << ip;
-    QString command = settings->value("common/vncpromt").toString().trimmed();
-    vncStart = new QProcess(this);
-    if(command.length()==0) {
-        QMessageBox::critical(0, qApp->tr("Не могу выполнить подключение по VNC"),
-                              QString("Отсутсвует настройка по VNC подключению.\n"
-                                      "Зайдтие в меню Настройка->Параметры."),
-                              QMessageBox::Ok);
-    }
-//    command = command + " " + ip;
-    qDebug() << command << argum;
-    vncStart->start(command,argum);
-//    vncStart->waitForFinished();
-//    QString message = vncStart->readAllStandardOutput();
-//    qDebug() << message;
-//    qDebug() << "Error" << endl << vncStart->readAllStandardError();
-//    system(qPrintable(command));
-
+    connectToObject(idx);
 }
 
 void InfoObjectDialog::on_toolButtonDell_clicked()
@@ -169,4 +141,35 @@ void InfoObjectDialog::on_toolButtonDell_clicked()
     if (reply == QMessageBox::Yes)
         q.exec(strSQL);
     modelPC->setQuery(modelPC->query().lastQuery());
+}
+
+void InfoObjectDialog::connectToObject(const QModelIndex &idx)
+{
+    QStringList argum;
+    QString ip = modelPC->data(modelPC->index(idx.row(),1)).toString();
+
+#ifdef Q_OS_WIN
+     argum << ip << "-password=88888888";
+#else
+     argum << "-passwd" << "/home/rust/.vnc/passwd" << ip;
+#endif
+
+//    argum << "-passwd" << ip;
+    QString command = settings->value("common/vncpromt").toString().trimmed();
+    vncStart = new QProcess(this);
+    if(command.length()==0) {
+        QMessageBox::critical(0, qApp->tr("Не могу выполнить подключение по VNC"),
+                              QString("Отсутсвует настройка по VNC подключению.\n"
+                                      "Зайдтие в меню Настройка->Параметры."),
+                              QMessageBox::Ok);
+    }
+    vncStart->start(command,argum);
+
+
+}
+
+void InfoObjectDialog::on_toolButtonVnc_clicked()
+{
+    QModelIndex idx = ui->tableViewPC->selectionModel()->currentIndex();
+    connectToObject(idx);
 }

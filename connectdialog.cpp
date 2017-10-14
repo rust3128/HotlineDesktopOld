@@ -38,6 +38,7 @@ void ConnectDialog::setupUI()
     ui->lineEditUser->setEnabled(false);
     ui->lineEditPass->setEnabled(false);
     ui->lineEditVnc->setEnabled(false);
+    ui->toolButton->setEnabled(false);
 }
 
 void ConnectDialog::writeSettings()
@@ -65,6 +66,7 @@ void ConnectDialog::on_checkBoxEdit_clicked()
         ui->lineEditUser->setEnabled(true);
         ui->lineEditPass->setEnabled(true);
         ui->lineEditVnc->setEnabled(true);
+        ui->toolButton->setEnabled(true);
         editing=true;
 
     } else {
@@ -73,6 +75,7 @@ void ConnectDialog::on_checkBoxEdit_clicked()
         ui->lineEditUser->setEnabled(false);
         ui->lineEditPass->setEnabled(false);
         ui->lineEditVnc->setEnabled(false);
+        ui->toolButton->setEnabled(false);
     }
 }
 
