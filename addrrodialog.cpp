@@ -56,7 +56,7 @@ void addRroDialog::editRro()
     QSqlQuery q;
     QString strSQL = QString("select * from rro where rroid=%1").arg(objectID);
     this->setWindowTitle("Правка данных по РРО");
-    q.exec(strSQL);
+    if(!q.exec(strSQL)) qDebug() << "Не могу получить данные по РРО" << q.lastError().text();
     q.next();
     ui->comboBoxTerminal->setCurrentText(q.value("terminalid").toString().trimmed());
     ui->comboBoxTerminal->setDisabled(true);

@@ -29,6 +29,8 @@ private slots:
 
     void on_comboBoxRegion_activated(int idx);
 
+    void on_checkBoxShowAll_clicked();
+
 private:
     void createUI();
     void createUIRegions();

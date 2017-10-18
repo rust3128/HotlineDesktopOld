@@ -52,9 +52,10 @@ void ObjectWindow::createUI()
     ui->tableViewAzs->selectRow(0);
     ///Инициализация вкладки РРО
     modelRro->setTable("rro");
-    modelRro->setSort(2,Qt::AscendingOrder);
+    modelRro->setSort(3,Qt::AscendingOrder);
     modelRro->select();
     modelRro->setFilter(filterBrend);
+
 
     modelRro->setHeaderData(3,Qt::Horizontal,"Терминал");
     modelRro->setHeaderData(4,Qt::Horizontal,"POS ID");
@@ -67,6 +68,8 @@ void ObjectWindow::createUI()
     modelRro->setHeaderData(11,Qt::Horizontal,"ID DEV");
     modelRro->setHeaderData(12,Qt::Horizontal,"Персонализирован");
 
+
+
     ui->tableViewRro->setModel(modelRro);
     ui->tableViewRro->verticalHeader()->hide();
     ui->tableViewRro->hideColumn(0);
@@ -75,6 +78,7 @@ void ObjectWindow::createUI()
     ui->tableViewRro->hideColumn(7);
     ui->tableViewRro->hideColumn(9);
     ui->tableViewRro->resizeColumnsToContents();
+
     ui->tableViewRro->verticalHeader()->setDefaultSectionSize(ui->tableViewRro->verticalHeader()->minimumSectionSize());
     ui->tableViewRro->selectRow(0);
 //    spanRro();
@@ -89,6 +93,8 @@ void ObjectWindow::createUIRegions()
     modelRegions->setQuery(strSQL);
     ui->comboBoxRegion->setModel(modelRegions);
     ui->comboBoxRegion->setModelColumn(1);
+    ui->comboBoxRegion->setCurrentIndex(-1);
+    ui->checkBoxShowAll->setChecked(true);
     regionID=-1;
 }
 
@@ -300,6 +306,15 @@ void ObjectWindow::on_comboBoxRegion_activated(int idx)
 {
     QModelIndex indexModel=modelRegions->index(idx,0,QModelIndex());
     regionID=modelRegions->data(indexModel, Qt::DisplayRole).toInt();
-    qDebug() << "Region id " << regionID;
+//    qDebug() << "Region id " << regionID;
     modelAzs->setFilter(filterBrend+QString(" and regionid=%1").arg(regionID));
+    ui->checkBoxShowAll->setChecked(false);
+}
+
+void ObjectWindow::on_checkBoxShowAll_clicked()
+{
+    if(ui->checkBoxShowAll->isChecked()){
+        ui->comboBoxRegion->setCurrentIndex(-1);
+        modelAzs->setFilter(filterBrend);
+    }
 }

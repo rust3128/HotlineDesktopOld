@@ -114,10 +114,11 @@ void InfoObjectDialog::on_toolButton_clicked()
 void InfoObjectDialog::on_toolButtonRroEdit_clicked()
 {
     QSqlQuery q;
+    QModelIndex idx = ui->tableViewRro->selectionModel()->currentIndex();
     QString strSQL = QString("SELECT brendid FROM brends where name='%1'").arg(azs.brendName);
     q.exec(strSQL);
     q.next();
-    addRroDialog *addRroDlg =  new addRroDialog(azs.objectID,q.value(0).toInt());
+    addRroDialog *addRroDlg =  new addRroDialog(modelRro->data(modelRro->index(idx.row(),0)).toInt(),q.value(0).toInt());
     addRroDlg->exec();
     modelRro->setQuery(modelRro->query().lastQuery());
 }

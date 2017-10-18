@@ -12,5 +12,6 @@
         <file>resource/Icon/hotline_big.png</file>
         <file>resource/Icon/hotline.ico</file>
         <file>resource/Icon/vncviewer.ico</file>
+        <file>resource/Icon/computers.png</file>
     </qresource>
 </RCC>
