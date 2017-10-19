@@ -97,7 +97,7 @@
          <item row="1" column="0">
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>Путь к БД:</string>
+            <string>Имя БД:</string>
            </property>
           </widget>
          </item>

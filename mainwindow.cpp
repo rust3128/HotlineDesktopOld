@@ -8,6 +8,8 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QMessageBox>
+#include <QDebug>
+#include <QMdiSubWindow>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -53,10 +55,21 @@ void MainWindow::slotGetNumberButton()
     q.finish();
     ObjectWindow *objWin = new ObjectWindow(brendID, button->text());
     objWin->setWindowTitle(button->text());
+
+    if(mdiArea->subWindowList().size()>0){
+        for(int i=0; i<mdiArea->subWindowList().size();++i) {
+            if(mdiArea->subWindowList().at(i)->windowTitle() == button->text()) {
+                mdiArea->setActiveSubWindow(mdiArea->subWindowList().at(i));
+                return;
+            }
+
+        }
+    }
+
     mdiArea->addSubWindow(objWin);
     objWin->show();
-    mdiArea->tileSubWindows();
-//    mdiArea->cascadeSubWindows();
+//    mdiArea->tileSubWindows();
+    mdiArea->cascadeSubWindows();
 }
 
 void MainWindow::setToolBarBrends()

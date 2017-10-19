@@ -7,6 +7,7 @@
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+    a.setQuitOnLastWindowClosed(true);
 
 //    QCoreApplication::setOrganizationName(ORGANIZATION_NAME);
 //    QCoreApplication::setOrganizationDomain(ORGANIZATION_DOMAIN);

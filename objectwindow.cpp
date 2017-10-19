@@ -298,8 +298,8 @@ void ObjectWindow::on_tableViewAzs_doubleClicked(const QModelIndex &idx)
 {
 //    int objID = modelRro->data(modelRro->index(idx.row(),0)).toInt();
 //    modelAzs->record(idx.row());
-    InfoObjectDialog *infObjDlg = new InfoObjectDialog(modelAzs->record(idx.row()),namebrend);
-    infObjDlg->exec();
+    InfoObjectDialog *infObjDlg = new InfoObjectDialog(modelAzs->record(idx.row()),namebrend,this);
+    infObjDlg->show();
 }
 
 void ObjectWindow::on_comboBoxRegion_activated(int idx)
@@ -307,7 +307,8 @@ void ObjectWindow::on_comboBoxRegion_activated(int idx)
     QModelIndex indexModel=modelRegions->index(idx,0,QModelIndex());
     regionID=modelRegions->data(indexModel, Qt::DisplayRole).toInt();
 //    qDebug() << "Region id " << regionID;
-    modelAzs->setFilter(filterBrend+QString(" and regionid=%1").arg(regionID));
+    filterBrend += QString(QString(" and regionid=%1").arg(regionID));
+    modelAzs->setFilter(filterBrend);
     ui->checkBoxShowAll->setChecked(false);
 }
 
@@ -315,6 +316,7 @@ void ObjectWindow::on_checkBoxShowAll_clicked()
 {
     if(ui->checkBoxShowAll->isChecked()){
         ui->comboBoxRegion->setCurrentIndex(-1);
+        filterBrend=QString("brendid=%1").arg(brendid);
         modelAzs->setFilter(filterBrend);
     }
 }

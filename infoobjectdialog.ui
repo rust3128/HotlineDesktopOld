@@ -162,7 +162,7 @@
       <bool>true</bool>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="iconSize">
       <size>
@@ -269,7 +269,7 @@
        <item row="1" column="1">
         <widget class="QToolButton" name="toolButtonAdd">
          <property name="toolTip">
-          <string>Добавить ПК</string>
+          <string>Добавить ПК, Ins</string>
          </property>
          <property name="text">
           <string>...</string>
@@ -277,6 +277,9 @@
          <property name="icon">
           <iconset resource="resource.qrc">
            <normaloff>:/resource/Icon/add.png</normaloff>:/resource/Icon/add.png</iconset>
+         </property>
+         <property name="shortcut">
+          <string>Ins</string>
          </property>
         </widget>
        </item>
