@@ -15,7 +15,7 @@ InfoObjectDialog::InfoObjectDialog(QSqlRecord record, QString nameBrend, QWidget
 {
     ui->setupUi(this);
 
-    settings = new QSettings(ORGANIZATION_NAME, APPLICATION_NAME);
+    settings = new QSettings("HotlineDesktop.cfg", QSettings::IniFormat);
 
     azs.brendName=nameBrend;
     azs.objectID=record.value("objectid").toInt();

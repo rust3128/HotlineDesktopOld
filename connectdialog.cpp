@@ -11,7 +11,7 @@ ConnectDialog::ConnectDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    settings = new QSettings(ORGANIZATION_NAME, APPLICATION_NAME);
+    settings = new QSettings("HotlineDesktop.cfg", QSettings::IniFormat);
     editing=false;
     setupUI();
 
@@ -25,11 +25,15 @@ ConnectDialog::~ConnectDialog()
 
 void ConnectDialog::setupUI()
 {
-    ui->lineEditHost->setText(settings->value("database/hostname").toString().trimmed());
-    ui->lineEditDbPath->setText(settings->value("database/name").toString().trimmed());
-    ui->lineEditUser->setText(settings->value("database/user").toString().trimmed());
-    ui->lineEditPass->setText(settings->value("database/pass").toString().trimmed());
-    ui->lineEditVnc->setText(settings->value("common/vncpromt").toString().trimmed());
+    settings->beginGroup("Database");
+    ui->lineEditHost->setText(settings->value("hostname").toString().trimmed());
+    ui->lineEditDbPath->setText(settings->value("name").toString().trimmed());
+    ui->lineEditUser->setText(settings->value("user").toString().trimmed());
+    ui->lineEditPass->setText(settings->value("pass").toString().trimmed());
+    settings->endGroup();
+    settings->beginGroup("Common");
+    ui->lineEditVnc->setText(settings->value("vncpromt").toString().trimmed());
+    settings->endGroup();
 
     ui->lineEditPass->setEchoMode(QLineEdit::Password);
 
@@ -43,12 +47,16 @@ void ConnectDialog::setupUI()
 
 void ConnectDialog::writeSettings()
 {
-    settings->setValue("database/hostname",ui->lineEditHost->text().trimmed());
-    settings->setValue("database/name",ui->lineEditDbPath->text().trimmed());
-    settings->setValue("database/user",ui->lineEditUser->text().trimmed());
-    settings->setValue("database/pass",ui->lineEditPass->text().trimmed());
-    settings->setValue("common/vncpromt",ui->lineEditVnc->text().trimmed());
-    settings->sync();
+    settings->beginGroup("Database");
+    settings->setValue("hostname",ui->lineEditHost->text().trimmed());
+    settings->setValue("name",ui->lineEditDbPath->text().trimmed());
+    settings->setValue("user",ui->lineEditUser->text().trimmed());
+    settings->setValue("pass",ui->lineEditPass->text().trimmed());
+    settings->endGroup();
+    settings->beginGroup("Common");
+    settings->setValue("vncpromt",ui->lineEditVnc->text().trimmed());
+    settings->endGroup();
+
     if (QMessageBox::Yes == QMessageBox::question(this, "Закрытие программы",
                           "Для применения настроек подключения необходимо закрыть программу.<br>"
                                                   "Сделать это сейчас?",

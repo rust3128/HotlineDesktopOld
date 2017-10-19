@@ -8,9 +8,9 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QCoreApplication::setOrganizationName(ORGANIZATION_NAME);
-    QCoreApplication::setOrganizationDomain(ORGANIZATION_DOMAIN);
-    QCoreApplication::setApplicationName(APPLICATION_NAME);
+//    QCoreApplication::setOrganizationName(ORGANIZATION_NAME);
+//    QCoreApplication::setOrganizationDomain(ORGANIZATION_DOMAIN);
+//    QCoreApplication::setApplicationName(APPLICATION_NAME);
 
     QTranslator *qt_translator = new QTranslator();
     if(qt_translator->load(":/resource/translate/qtbase_ru.qm"))

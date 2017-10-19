@@ -4,19 +4,30 @@
 #include <QtSql>
 #include <QMessageBox>
 #include <QString>
-#include "options.h"
+//#include "options.h"
 #include "connectdialog.h"
+#include <QSettings>
 
 static bool createConnection()
 {
 
-    QSettings settings(ORGANIZATION_NAME, APPLICATION_NAME);
+    QSettings settings("HotlineDesktop.cfg", QSettings::IniFormat);
+    QFile cfgfile("HotlineDesktop.cfg");
+    if (!cfgfile.exists()){
+        ConnectDialog *connDlg = new ConnectDialog();
+        connDlg->exec();
+        return false;
+    }
+
+
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName(settings.value("database/hostname").toString().trimmed());
-    db.setDatabaseName(settings.value("database/name").toString().trimmed());
-    db.setUserName(settings.value("database/user").toString().trimmed());
-    db.setPassword(settings.value("database/pass").toString().trimmed());
+    settings.beginGroup("Database");
+    db.setHostName(settings.value("hostname").toString().trimmed());
+    db.setDatabaseName(settings.value("name").toString().trimmed());
+    db.setUserName(settings.value("user").toString().trimmed());
+    db.setPassword(settings.value("pass").toString().trimmed());
+    settings.endGroup();
 
     if(!db.open()) {
         qDebug() <<  "Не возможно подключиться к базе данных." << endl << "Причина:" << db.lastError().text();
