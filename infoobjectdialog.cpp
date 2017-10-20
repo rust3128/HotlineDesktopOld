@@ -9,6 +9,9 @@
 #include <QMessageBox>
 
 
+
+
+
 InfoObjectDialog::InfoObjectDialog(QSqlRecord record, QString nameBrend, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::InfoObjectDialog)
@@ -76,7 +79,8 @@ void InfoObjectDialog::createUI()
     ui->tableViewPC->selectRow(0);
 
 
-    ui->labelColRro->setText("Кассовх аппаратов "+QString::number(modelRro->rowCount())+".");
+    ui->labelColRro->setText("Кассовых аппаратов "+QString::number(modelRro->rowCount())+" шт. ПК "
+                             +QString::number(modelPC->rowCount())+" шт.");
 
 
 }
@@ -173,4 +177,31 @@ void InfoObjectDialog::on_toolButtonVnc_clicked()
 {
     QModelIndex idx = ui->tableViewPC->selectionModel()->currentIndex();
     connectToObject(idx);
+}
+
+void InfoObjectDialog::on_toolButtonDelRro_clicked()
+{
+    QSqlQuery q;
+    QModelIndex idx = ui->tableViewRro->selectionModel()->currentIndex();
+    int rroID = modelRro->data(modelRro->index(idx.row(),0)).toInt();
+    QString zn = modelRro->data(modelRro->index(idx.row(),3)).toString();
+
+    QString strSql = QString("DELETE FROM rro WHERE `rroid`='%1'").arg(rroID);
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, QString::fromUtf8("Удаление РРО"),
+                          QString::fromUtf8("Вы действительно хотите удалить РРО с ЗН %1")
+                                  .arg(zn),
+                          QMessageBox::Yes | QMessageBox::No);
+
+    switch (reply) {
+    case QMessageBox::Yes:
+        q.exec(strSql);
+        break;
+    case QMessageBox::No:
+        return;
+        break;
+    default:
+        break;
+    }
+    modelRro->setQuery(modelRro->query().lastQuery());
 }

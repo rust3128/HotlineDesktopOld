@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QSqlTableModel>
+#include <QShortcut>
 
 namespace Ui {
 class ObjectWindow;
@@ -30,6 +31,7 @@ private slots:
     void on_comboBoxRegion_activated(int idx);
 
     void on_checkBoxShowAll_clicked();
+    void on_pressEnter();
 
 private:
     void createUI();
@@ -51,6 +53,7 @@ private:
     QSqlTableModel *modelRro;   //Модель РРО
     QSqlQueryModel *modelRegions;   //Модель регионов
     QString filterBrend;      //Фильтр для выбора АЗС конкретного бренда
+    QShortcut * keyEnter;
 
 };
 

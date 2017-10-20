@@ -5,6 +5,7 @@
 #include "qdynamicbutton.h"
 #include "objectwindow.h"
 #include "findwindow.h"
+#include "aboutdialog.h"
 #include <QSqlQuery>
 #include <QSqlError>
 #include <QMessageBox>
@@ -88,10 +89,8 @@ void MainWindow::setToolBarBrends()
 
 void MainWindow::on_actionAbout_triggered()
 {
-    QMessageBox::about(this, "О Программе Hotline Desktop",
-                       "<h2>Hotline Desktop v.0.0.2</h2>"
-                       "<p>Copyright &copy; 2017 <a href=”mailto:rust3128gmail.com?subject=HotlineDesktop”>Rust (Ruslan Polupan).</a></p>"
-                       "<p>Программа-инструмент для помощи сотрудникам горячей линии.");
+    AboutDialog *about = new AboutDialog();
+    about->exec();
 }
 
 void MainWindow::on_action_Qt_triggered()

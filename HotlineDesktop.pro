@@ -36,7 +36,8 @@ SOURCES += \
     addrrodialog.cpp \
     infoobjectdialog.cpp \
     addpcdialog.cpp \
-    findwindow.cpp
+    findwindow.cpp \
+    aboutdialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -50,7 +51,8 @@ HEADERS += \
     addrrodialog.h \
     infoobjectdialog.h \
     addpcdialog.h \
-    findwindow.h
+    findwindow.h \
+    aboutdialog.h
 
 FORMS += \
         mainwindow.ui \
@@ -61,9 +63,11 @@ FORMS += \
     addrrodialog.ui \
     infoobjectdialog.ui \
     addpcdialog.ui \
-    findwindow.ui
+    findwindow.ui \
+    aboutdialog.ui
 
 RESOURCES += \
     resource.qrc
 
-DISTFILES +=
+DISTFILES += \
+    history.txt

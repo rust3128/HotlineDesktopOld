@@ -14,8 +14,11 @@ ObjectWindow::ObjectWindow(int brendID, QString brendName, QWidget *parent) :
     ui->setupUi(this);
     brendid=brendID;
     namebrend=brendName;
+    keyEnter = new QShortcut(QKeySequence(Qt::Key_Return),ui->tableViewAzs);
     createUI();
     connect(ui->tableViewRro, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(on_tableViewRro_customContextMenuRequested(QPoint)));
+
+    connect(keyEnter,SIGNAL(activated()),this,SLOT(on_pressEnter()));
 }
 
 ObjectWindow::~ObjectWindow()
@@ -319,4 +322,10 @@ void ObjectWindow::on_checkBoxShowAll_clicked()
         filterBrend=QString("brendid=%1").arg(brendid);
         modelAzs->setFilter(filterBrend);
     }
+}
+
+void ObjectWindow::on_pressEnter()
+{
+    QModelIndex idx = ui->tableViewAzs->selectionModel()->currentIndex();
+    on_tableViewAzs_doubleClicked(idx);
 }

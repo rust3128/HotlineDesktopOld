@@ -43,6 +43,8 @@ private slots:
 
     void on_toolButtonVnc_clicked();
 
+    void on_toolButtonDelRro_clicked();
+
 private:
     void createUI();
     void connectToObject(const QModelIndex &idx);   //Подключение по ПК по VNC
