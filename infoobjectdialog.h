@@ -44,6 +44,7 @@ private slots:
     void on_toolButtonVnc_clicked();
 
     void on_toolButtonDelRro_clicked();
+    void finVNC();
 
 private:
     void createUI();

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>270</width>
+    <width>197</width>
     <height>328</height>
    </rect>
   </property>
@@ -24,7 +24,7 @@
    <item row="1" column="1">
     <widget class="QLineEdit" name="lineEditIP"/>
    </item>
-   <item row="2" column="0" colspan="2">
+   <item row="3" column="0" colspan="2">
     <widget class="QDialogButtonBox" name="buttonBox">
      <property name="standardButtons">
       <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
@@ -35,6 +35,16 @@
     <widget class="QFrame" name="frameType">
      <layout class="QGridLayout" name="gridLayout"/>
     </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Пароль на VNC:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="lineEditVNCPass"/>
    </item>
   </layout>
  </widget>

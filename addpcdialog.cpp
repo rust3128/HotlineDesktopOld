@@ -31,10 +31,11 @@ AddPCDialog::AddPCDialog(int objID, int pc, QWidget *parent) :
         QRegExpValidator *ipValidator = new QRegExpValidator(ipRegex, this);
         /* Устанавливаем Валидатор на QLineEdit */
         ui->lineEditIP->setValidator(ipValidator);
-
+        ui->lineEditVNCPass->setText("88888888");
        if(pcID >=0) {
            existPc();
        }
+
        showPCType();
 }
 
@@ -87,10 +88,11 @@ void AddPCDialog::addNewPC()
     if(ui->lineEditIP->text().length()==0) {
         qDebug() << "Не верно указан IP Адрес.";
     }
-    strSQL = QString("INSERT INTO computers (objectid, pctypeid, ip) VALUES (%1, %2, INET_ATON('%3'))")
+    strSQL = QString("INSERT INTO computers (objectid, pctypeid, ip, vncpass) VALUES (%1, %2, INET_ATON('%3'), %4)")
             .arg(objectID)
             .arg(rroTypeID)
-            .arg(ui->lineEditIP->text().trimmed());
+            .arg(ui->lineEditIP->text().trimmed())
+            .arg(ui->lineEditVNCPass->text().trimmed());
 //    qDebug() << strSQL;
     if(!q.exec(strSQL)) qDebug() << "Не удалось добавить компьютер" << q.lastError().text();
 
@@ -98,22 +100,24 @@ void AddPCDialog::addNewPC()
 
 void AddPCDialog::existPc()
 {
-    QString strSQL = QString("SELECT pctypeid, INET_NTOA(ip) FROM computers WHERE pcid=%1")
+    QString strSQL = QString("SELECT pctypeid, INET_NTOA(ip), vncpass FROM computers WHERE pcid=%1")
             .arg(pcID);
     QSqlQuery q;
     if(!q.exec(strSQL)) qDebug() << "Не удалось получить информацию о РС" << q.lastError().text();
     q.next();
     rroTypeID=q.value(0).toInt();
     ui->lineEditIP->setText(q.value(1).toString());
+    ui->lineEditVNCPass->setText(q.value(2).toString());
 }
 
 void AddPCDialog::editPC()
 {
     QString strSQL;
     QSqlQuery q;
-    strSQL = QString("UPDATE `hotline`.`computers` SET `pctypeid`='%1', `ip`=INET_ATON('%2') WHERE `pcid`='%3'")
+    strSQL = QString("UPDATE `hotline`.`computers` SET `pctypeid`='%1', `ip`=INET_ATON('%2'), `vncpass`='%3' WHERE `pcid`='%4'")
             .arg(rroTypeID)
             .arg(ui->lineEditIP->text().trimmed())
+            .arg(ui->lineEditVNCPass->text().trimmed())
             .arg(pcID);
 //    qDebug() << strSQL;
     if(!q.exec(strSQL)) qDebug() << "Не удалось обновить информацию о ПК" << q.lastError().text();

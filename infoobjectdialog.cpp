@@ -64,13 +64,14 @@ void InfoObjectDialog::createUI()
     ui->tableViewRro->verticalHeader()->setDefaultSectionSize(ui->tableViewRro->verticalHeader()->minimumSectionSize());
     ui->tableViewRro->selectRow(0);
 
-    strSql = QString("SELECT pctype.typename, INET_NTOA(computers.ip), computers.pcid AS IP FROM pctype "
+    strSql = QString("SELECT pctype.typename, INET_NTOA(computers.ip), computers.pcid AS IP, computers.vncpass FROM pctype "
                      "INNER JOIN computers ON pctype.pctypeid = computers.pctypeid "
                      "WHERE computers.objectid = %1 "
                      "ORDER BY computers.pctypeid").arg(azs.objectID);
     modelPC->setQuery(strSql);
     modelPC->setHeaderData(0,Qt::Horizontal,"Назначение");
     modelPC->setHeaderData(1,Qt::Horizontal,"IP Адрес");
+    modelPC->setHeaderData(3,Qt::Horizontal,"Пароль VNC");
     ui->tableViewPC->setModel(modelPC);
     ui->tableViewPC->verticalHeader()->hide();
     ui->tableViewPC->hideColumn(2);
@@ -152,9 +153,11 @@ void InfoObjectDialog::connectToObject(const QModelIndex &idx)
 {
     QStringList argum;
     QString ip = modelPC->data(modelPC->index(idx.row(),1)).toString();
+//    QString pass = "-password=22222";
+    QString pass = "-password="+modelPC->data(modelPC->index(idx.row(),3)).toString().trimmed();
 
 #ifdef Q_OS_WIN
-     argum << ip << "-password=88888888";
+     argum << ip << pass;
 #else
      argum << "-passwd" << "/home/rust/.vnc/passwd" << ip;
 #endif
@@ -168,6 +171,8 @@ void InfoObjectDialog::connectToObject(const QModelIndex &idx)
                                       "Зайдтие в меню Настройка->Параметры."),
                               QMessageBox::Ok);
     }
+    connect(vncStart, SIGNAL(finished(int)), this, SLOT(finVNC()));
+    vncStart->setReadChannel(QProcess::StandardError);
     vncStart->start(command,argum);
 
 
@@ -204,4 +209,12 @@ void InfoObjectDialog::on_toolButtonDelRro_clicked()
         break;
     }
     modelRro->setQuery(modelRro->query().lastQuery());
+}
+
+void InfoObjectDialog::finVNC()
+{
+    QByteArray *arr = new QByteArray;
+    *arr = vncStart->readAllStandardError();
+    qDebug() << "VNC Error" << arr->data();
+
 }
