@@ -309,8 +309,10 @@ void ObjectWindow::on_comboBoxRegion_activated(int idx)
 {
     QModelIndex indexModel=modelRegions->index(idx,0,QModelIndex());
     regionID=modelRegions->data(indexModel, Qt::DisplayRole).toInt();
+    filterBrend=QString("brendid=%1").arg(brendid);
 //    qDebug() << "Region id " << regionID;
     filterBrend += QString(QString(" and regionid=%1").arg(regionID));
+    qDebug() << "filter" << filterBrend;
     modelAzs->setFilter(filterBrend);
     ui->checkBoxShowAll->setChecked(false);
 }

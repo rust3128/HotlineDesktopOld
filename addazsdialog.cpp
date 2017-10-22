@@ -166,7 +166,7 @@ void AddAzsDialog::updateAzs()
                              .arg(ui->lineEditPhone->text().trimmed())
                              .arg(ui->plainTextEditComments->toPlainText())
                              .arg(objectID) ;
-//     qDebug() << "SQL" << strSQL;
+     qDebug() << "SQL" << strSQL;
     if(!q.exec(strSQL))
         qDebug() << "Не могу добавить новый объект." << q.lastError().text();
     else
@@ -180,4 +180,5 @@ void AddAzsDialog::on_comboBoxRegion_activated(int index)
 {
     QModelIndex indexModel=modelRegions->index(index,0,QModelIndex());
     regionID=modelRegions->data(indexModel, Qt::DisplayRole).toInt();
+    qDebug() << "Region ID" << regionID;
 }
