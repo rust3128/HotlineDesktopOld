@@ -13,5 +13,6 @@
         <file>resource/Icon/hotline.ico</file>
         <file>resource/Icon/vncviewer.ico</file>
         <file>resource/Icon/computers.png</file>
+        <file>resource/Icon/terminal.png</file>
     </qresource>
 </RCC>

@@ -46,9 +46,15 @@ private slots:
     void on_toolButtonDelRro_clicked();
     void finVNC();
 
+    void on_toolButtonPing_clicked();
+    void print_ping();
+
+    void on_pushButtonClose_clicked();
+
 private:
     void createUI();
     void connectToObject(const QModelIndex &idx);   //Подключение по ПК по VNC
+    void closeEvent(QCloseEvent *event);
 private:
     Ui::InfoObjectDialog *ui;
     azsInfo azs;
@@ -56,6 +62,8 @@ private:
     QSqlQueryModel *modelPC;
     QSettings *settings;
     QProcess *vncStart;
+    QProcess *ping;
+
 };
 
 #endif // INFOOBJECTDIALOG_H

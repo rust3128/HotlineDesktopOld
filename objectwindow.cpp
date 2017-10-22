@@ -303,6 +303,9 @@ void ObjectWindow::on_tableViewAzs_doubleClicked(const QModelIndex &idx)
 //    modelAzs->record(idx.row());
     InfoObjectDialog *infObjDlg = new InfoObjectDialog(modelAzs->record(idx.row()),namebrend,this);
     infObjDlg->show();
+
+
+
 }
 
 void ObjectWindow::on_comboBoxRegion_activated(int idx)

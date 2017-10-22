@@ -103,7 +103,7 @@ void MainWindow::on_actionFindRro_triggered()
     FindWindow *findWnd = new FindWindow();
     mdiArea->addSubWindow(findWnd);
     findWnd->show();
-    mdiArea->tileSubWindows();
+    mdiArea->cascadeSubWindows();
 }
 
 void MainWindow::on_actionCascade_triggered()

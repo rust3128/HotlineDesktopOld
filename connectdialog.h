@@ -39,6 +39,7 @@ private:
     void setupUI();
     void writeSettings();
 
+
 };
 
 #endif // CONNECTDIALOG_H

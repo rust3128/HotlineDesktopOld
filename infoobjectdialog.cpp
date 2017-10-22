@@ -7,6 +7,7 @@
 #include <QSqlQuery>
 #include <QtGlobal>
 #include <QMessageBox>
+#include <QTextCodec>
 
 
 
@@ -27,14 +28,27 @@ InfoObjectDialog::InfoObjectDialog(QSqlRecord record, QString nameBrend, QWidget
     azs.phone=record.value("phone").toString();
     azs.comments=record.value("comments").toString();
     this->setWindowTitle("Информация об АЗС "+QString::number(azs.terminalID)+" "+azs.brendName);
+    ui->pingOutput->hide();
+    ui->labelPingINFO->hide();
 
     createUI();
 //    qDebug() << record;
 }
 
+void InfoObjectDialog::closeEvent(QCloseEvent *event)
+{
+
+    if(ping) ping->kill();
+
+    qDebug() << "Close Event";
+}
+
 InfoObjectDialog::~InfoObjectDialog()
 {
+
     delete ui;
+//    ping->kill();
+//    qDebug() << "InfoDialog Destruktor";
 }
 
 void InfoObjectDialog::createUI()
@@ -217,4 +231,41 @@ void InfoObjectDialog::finVNC()
     *arr = vncStart->readAllStandardError();
     qDebug() << "VNC Error" << arr->data();
 
+}
+
+void InfoObjectDialog::on_toolButtonPing_clicked()
+{
+    if(ui->pingOutput->isHidden()) {
+        QModelIndex idx = ui->tableViewRro->selectionModel()->currentIndex();
+        QString ip = modelPC->data(modelPC->index(idx.row(),1)).toString();
+        QString pingMess = QString("PING "+modelPC->data(modelPC->index(idx.row(),0)).toString()+" IP: "+ip);
+        ui->labelPingINFO->setText(pingMess);
+        ping = new QProcess(this);
+        connect( ping, SIGNAL(readyReadStandardOutput ()), this, SLOT(print_ping()) );
+        ping->start("ping", QStringList() << "-t" <<ip);
+    } else {
+        ping->kill();
+//        ui->pingOutput->hide();
+//        ui->labelPingINFO->hide();
+    }
+
+}
+
+void InfoObjectDialog::print_ping()
+{
+    QByteArray      output;
+    ui->pingOutput->show();
+    ui->labelPingINFO->show();
+    output = ping->readAllStandardOutput ();
+    QTextCodec *codec = QTextCodec::codecForName("cp-866");
+    QString fio = codec->toUnicode(output.data());
+    fio.replace("\r\n","");
+
+    qDebug() << "ping output" << fio;
+    ui->pingOutput->appendPlainText(fio); //вывод в гуи
+}
+
+void InfoObjectDialog::on_pushButtonClose_clicked()
+{
+    this->close();
 }
