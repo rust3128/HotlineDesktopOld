@@ -245,8 +245,10 @@ void InfoObjectDialog::on_toolButtonPing_clicked()
         ping->start("ping", QStringList() << "-t" <<ip);
     } else {
         ping->kill();
-//        ui->pingOutput->hide();
-//        ui->labelPingINFO->hide();
+        ui->pingOutput->hide();
+        ui->pingOutput->clear();
+        ui->labelPingINFO->hide();
+
     }
 
 }
