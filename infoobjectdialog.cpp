@@ -38,7 +38,7 @@ InfoObjectDialog::InfoObjectDialog(QSqlRecord record, QString nameBrend, QWidget
 
 void InfoObjectDialog::closeEvent(QCloseEvent *event)
 {
-    qDebug() << "Close Event" << endl << ping;
+//    qDebug() << "Close Event" << endl << ping;
     if(ping) ping->kill();
 }
 

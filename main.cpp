@@ -20,7 +20,10 @@ int main(int argc, char *argv[])
     if(!createConnection())
         return 1;
 
-    //djhfdsjhfjds
+    //djhfdsjhfjdsggghg
+//    fggfg
+//            ghhg
+
 
 
     MainWindow w;
