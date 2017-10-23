@@ -177,7 +177,9 @@ void InfoObjectDialog::connectToObject(const QModelIndex &idx)
 #endif
 
 //    argum << "-passwd" << ip;
-    QString command = settings->value("common/vncpromt").toString().trimmed();
+    settings->beginGroup("Common");
+    QString command = settings->value("vncpromt").toString().trimmed();
+    settings->endGroup();
     vncStart = new QProcess(this);
     if(command.length()==0) {
         QMessageBox::critical(0, qApp->tr("Не могу выполнить подключение по VNC"),
