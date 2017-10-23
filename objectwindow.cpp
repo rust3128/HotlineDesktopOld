@@ -35,6 +35,7 @@ void ObjectWindow::createUI()
     ui->labelBrends->setText(namebrend);
     ///// Инициализация вкладки АЗС
     modelAzs->setTable("objects");
+    modelAzs->setSort(3,Qt::AscendingOrder);
     modelAzs->select();
     modelAzs->setFilter(filterBrend);
     modelAzs->setHeaderData(3,Qt::Horizontal,"Терминал");
@@ -301,11 +302,8 @@ void ObjectWindow::on_tableViewAzs_doubleClicked(const QModelIndex &idx)
 {
 //    int objID = modelRro->data(modelRro->index(idx.row(),0)).toInt();
 //    modelAzs->record(idx.row());
-    InfoObjectDialog *infObjDlg = new InfoObjectDialog(modelAzs->record(idx.row()),namebrend,this);
+    InfoObjectDialog *infObjDlg = new InfoObjectDialog(modelAzs->record(idx.row()),namebrend);
     infObjDlg->show();
-
-
-
 }
 
 void ObjectWindow::on_comboBoxRegion_activated(int idx)

@@ -119,8 +119,10 @@ void addRroDialog::saveNewRro()
 
     if(ui->radioButtonIks->isChecked())
         ekvaerName="ИКС";
-    else
+    if(ui->radioButtonUkr->isChecked())
         ekvaerName="УкрКард";
+    if(ui->radioButtonNoServise)
+        ekvaerName="";
 
     strSql = QString("INSERT INTO `hotline`.`rro` "
                      "(`brendid`, `objectid`, `terminalid`, `posid`, `rrotype`, `zn`, `fn`, `ekvaer`, `iddev`, `datepers`) "
@@ -159,8 +161,10 @@ void addRroDialog::updateRro()
 
     if(ui->radioButtonIks->isChecked())
         strEkvaer=ui->radioButtonIks->text();
-    else
+    if(ui->radioButtonUkr)
         strEkvaer=ui->radioButtonUkr->text();
+    if(ui->radioButtonNoServise)
+        strEkvaer="";
 
     QString strSQL = QString("UPDATE rro SET `posid`='%1', `rrotype`='%2', `zn`='%3', `fn`='%4', "
                      "`ekvaer`='%5', `iddev`='%6', `datepers`='%7' "

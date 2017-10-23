@@ -30,25 +30,24 @@ InfoObjectDialog::InfoObjectDialog(QSqlRecord record, QString nameBrend, QWidget
     this->setWindowTitle("Информация об АЗС "+QString::number(azs.terminalID)+" "+azs.brendName);
     ui->pingOutput->hide();
     ui->labelPingINFO->hide();
-
+    ping = new QProcess(this);
+    pingOFF=true;
     createUI();
 //    qDebug() << record;
 }
 
 void InfoObjectDialog::closeEvent(QCloseEvent *event)
 {
-
+    qDebug() << "Close Event" << endl << ping;
     if(ping) ping->kill();
-
-    qDebug() << "Close Event";
 }
 
 InfoObjectDialog::~InfoObjectDialog()
 {
-
+    qDebug() << "InfoDialog Destruktor";
     delete ui;
-//    ping->kill();
-//    qDebug() << "InfoDialog Destruktor";
+    ping->kill();
+
 }
 
 void InfoObjectDialog::createUI()
@@ -237,19 +236,31 @@ void InfoObjectDialog::finVNC()
 
 void InfoObjectDialog::on_toolButtonPing_clicked()
 {
-    if(ui->pingOutput->isHidden()) {
+    if(pingOFF) {
         QModelIndex idx = ui->tableViewRro->selectionModel()->currentIndex();
         QString ip = modelPC->data(modelPC->index(idx.row(),1)).toString();
         QString pingMess = QString("PING "+modelPC->data(modelPC->index(idx.row(),0)).toString()+" IP: "+ip);
         ui->labelPingINFO->setText(pingMess);
-        ping = new QProcess(this);
-        connect( ping, SIGNAL(readyReadStandardOutput ()), this, SLOT(print_ping()) );
-        ping->start("ping", QStringList() << "-t" <<ip);
-    } else {
-        ping->kill();
-        ui->pingOutput->hide();
+        pingOFF=false;
         ui->pingOutput->clear();
-        ui->labelPingINFO->hide();
+        ui->pingOutput->show();
+        ui->labelPingINFO->show();
+        ping->setProcessChannelMode(QProcess::MergedChannels);
+        connect( ping, SIGNAL(readyReadStandardOutput ()), this, SLOT(print_ping()) );
+
+#ifdef Q_OS_WIN
+     ping->start("ping", QStringList() << "-t" <<ip);
+#else
+     ping->start("ping", QStringList() <<ip);
+#endif
+    } else {
+//        ping->kill();
+        QProcess::execute(QString("kill -SIGINT %1").arg(ping->pid()));
+        pingOFF=true;
+        ping->kill();
+//        ui->pingOutput->hide();
+//        ui->pingOutput->clear();
+//        ui->labelPingINFO->hide();
 
     }
 
@@ -258,15 +269,17 @@ void InfoObjectDialog::on_toolButtonPing_clicked()
 void InfoObjectDialog::print_ping()
 {
     QByteArray      output;
-    ui->pingOutput->show();
-    ui->labelPingINFO->show();
     output = ping->readAllStandardOutput ();
     QTextCodec *codec = QTextCodec::codecForName("cp-866");
     QString fio = codec->toUnicode(output.data());
-    fio.replace("\r\n","");
-
-    qDebug() << "ping output" << fio;
-    ui->pingOutput->appendPlainText(fio); //вывод в гуи
+//    fio.replace("\n","");
+//    fio.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+//    fio.replace("\n","");
+    fio.chop(2);
+    if(fio.length()>0) {
+        qDebug() << "ping output" << fio;
+        ui->pingOutput->appendPlainText(fio); //вывод в гуи
+    }
 }
 
 void InfoObjectDialog::on_pushButtonClose_clicked()

@@ -63,6 +63,7 @@ private:
     QSettings *settings;
     QProcess *vncStart;
     QProcess *ping;
+    bool pingOFF;
 
 };
 
