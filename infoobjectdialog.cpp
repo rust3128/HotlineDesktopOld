@@ -3,6 +3,9 @@
 #include "addpcdialog.h"
 #include "options.h"
 #include "addrrodialog.h"
+#ifdef Q_OS_WIN
+    #include "windows.h"
+#endif
 #include <QDebug>
 #include <QSqlQuery>
 #include <QtGlobal>
@@ -247,6 +250,7 @@ void InfoObjectDialog::on_toolButtonPing_clicked()
         ui->labelPingINFO->show();
         ping->setProcessChannelMode(QProcess::MergedChannels);
         connect( ping, SIGNAL(readyReadStandardOutput ()), this, SLOT(print_ping()) );
+        connect(ping,SIGNAL(readyReadStandardError()),this,SLOT(print_ping()));
 
 #ifdef Q_OS_WIN
      ping->start("ping", QStringList() << "-t" <<ip);
@@ -254,10 +258,21 @@ void InfoObjectDialog::on_toolButtonPing_clicked()
      ping->start("ping", QStringList() <<ip);
 #endif
     } else {
-//        ping->kill();
-        QProcess::execute(QString("kill -SIGINT %1").arg(ping->pid()));
+//        qDebug() << "Ping ID" << ping->pid();
+//        ping->terminate();
+
+//        ping->kill(ping->pid(), SIGINT);
+//        QProcess::execute(QString("kill -SIGINT %1").arg(ping->processId()));
+//        QProcess::execute(QString("taskkill /PID %1 /F").arg(ping->processId()));
+
+#ifdef Q_OS_WIN
+     PROCESS_INFORMATION *pinfo = (PROCESS_INFORMATION  *)ping->pid();
+     QProcess::execute(QString("taskkill /PID %1 /F").arg(pinfo->dwProcessId));
+#else
+     QProcess::execute(QString("kill -SIGINT %1").arg(ping->pid()));
+#endif
         pingOFF=true;
-        ping->kill();
+
 //        ui->pingOutput->hide();
 //        ui->pingOutput->clear();
 //        ui->labelPingINFO->hide();
@@ -286,3 +301,15 @@ void InfoObjectDialog::on_pushButtonClose_clicked()
 {
     this->close();
 }
+
+//quint64 InfoObjectDialog::getProcessID(const QProcess* proc)
+//{
+
+//    return proc->processId();
+//#ifdef Q_OS_WIN
+//    struct _PROCESS_INFORMATION* procinfo = proc->pid();
+//    return procinfo->dwProcessId;
+//#else // Linux
+//    return proc->pid();
+//#endif // Q_WS_WIN
+//}

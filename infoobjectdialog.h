@@ -64,6 +64,7 @@ private:
     QProcess *vncStart;
     QProcess *ping;
     bool pingOFF;
+//    quint64 getProcessID(const QProcess* proc);
 
 };
 
