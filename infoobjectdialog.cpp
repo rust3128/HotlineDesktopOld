@@ -186,14 +186,12 @@ void InfoObjectDialog::connectToObject(const QModelIndex &idx)
     if(command.length()==0) {
         QMessageBox::critical(0, qApp->tr("Не могу выполнить подключение по VNC"),
                               QString("Отсутсвует настройка по VNC подключению.\n"
-                                      "Зайдтие в меню Настройка->Параметры."),
+                                      "Зайдите в меню Настройка->Параметры."),
                               QMessageBox::Ok);
     }
     connect(vncStart, SIGNAL(finished(int)), this, SLOT(finVNC()));
     vncStart->setReadChannel(QProcess::StandardError);
     vncStart->start(command,argum);
-
-
 }
 
 void InfoObjectDialog::on_toolButtonVnc_clicked()
@@ -232,7 +230,7 @@ void InfoObjectDialog::on_toolButtonDelRro_clicked()
 void InfoObjectDialog::finVNC()
 {
     QByteArray *arr = new QByteArray;
-    *arr = vncStart->readAllStandardError();
+    *arr = vncStart->readAllStandardOutput ();
     qDebug() << "VNC Error" << arr->data();
 
 }
@@ -272,10 +270,9 @@ void InfoObjectDialog::on_toolButtonPing_clicked()
      QProcess::execute(QString("kill -SIGINT %1").arg(ping->pid()));
 #endif
         pingOFF=true;
-
-//        ui->pingOutput->hide();
-//        ui->pingOutput->clear();
-//        ui->labelPingINFO->hide();
+        ui->pingOutput->hide();
+        ui->pingOutput->clear();
+        ui->labelPingINFO->hide();
 
     }
 
