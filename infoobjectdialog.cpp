@@ -250,8 +250,6 @@ void InfoObjectDialog::on_toolButtonPing_clicked()
         ui->labelPingINFO->show();
         ping->setProcessChannelMode(QProcess::MergedChannels);
         connect( ping, SIGNAL(readyReadStandardOutput ()), this, SLOT(print_ping()) );
-        connect(ping,SIGNAL(readyReadStandardError()),this,SLOT(print_ping()));
-
 #ifdef Q_OS_WIN
      ping->start("ping", QStringList() << "-t" <<ip);
 #else

@@ -161,9 +161,9 @@ void addRroDialog::updateRro()
 
     if(ui->radioButtonIks->isChecked())
         strEkvaer=ui->radioButtonIks->text();
-    if(ui->radioButtonUkr)
+    if(ui->radioButtonUkr->isChecked())
         strEkvaer=ui->radioButtonUkr->text();
-    if(ui->radioButtonNoServise)
+    if(ui->radioButtonNoServise->isChecked())
         strEkvaer="";
 
     QString strSQL = QString("UPDATE rro SET `posid`='%1', `rrotype`='%2', `zn`='%3', `fn`='%4', "
@@ -177,6 +177,7 @@ void addRroDialog::updateRro()
             .arg(ui->lineEditIdDev->text().trimmed())
             .arg(ui->dateTimeEditPers->dateTime().toString("yyyy-MM-dd hh:mm:ss"))
             .arg(objectID);
+    qDebug() << strSQL;
     if(!q.exec(strSQL)) {
         QMessageBox::critical(this,
                              QString::fromUtf8("Ошибка!"),
